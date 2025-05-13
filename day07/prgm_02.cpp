@@ -2,109 +2,162 @@
 #include <string>
 using namespace std;
 
-const int MAX_PATIENTS = 100;  // Maximum number of patients
+const int MAX_PATIENTS = 100;
+const int MAX_DOCTORS = 10;
 
-// Function to add patient details
-void addPatientDetails(string patients[], string patientIDs[], int& patientCount) {
-    if (patientCount >= MAX_PATIENTS) {
-        cout << "Cannot add more patients. Maximum limit reached!" << endl;
+struct Patient {
+    int id;
+    string name;
+    string disease;
+    int roomNo;
+    int daysAdmitted;
+    float totalBill;
+};
+
+struct Doctor {
+    int id;
+    string name;
+    string specialization;
+    bool isAvailable;
+};
+
+Patient patients[MAX_PATIENTS];
+Doctor doctors[MAX_DOCTORS];
+int patientCount = 0;
+int doctorCount = 0;
+
+void addDoctor() {
+    if (doctorCount >= MAX_DOCTORS) {
+        cout << "Doctor capacity reached!" << endl;
         return;
     }
-    
-    string patientName, patientID;
-    cout << "Enter Patient Name: ";
-    cin >> patientName;
-    cout << "Enter Patient ID: ";
-    cin >> patientID;
 
-    patients[patientCount] = patientName;
-    patientIDs[patientCount] = patientID;
+    Doctor newDoctor;
+    newDoctor.id = doctorCount + 1;
 
-    cout << "Patient added successfully!" << endl;
-    patientCount++;
-}
+    cout << "Enter doctor's name: ";
+    cin.ignore();
+    getline(cin, newDoctor.name);
 
-// Function to add doctor details
-void addDoctorDetails(string doctors[], string doctorIDs[], int& doctorCount) {
-    string doctorName, doctorID;
-    cout << "Enter Doctor Name: ";
-    cin >> doctorName;
-    cout << "Enter Doctor ID: ";
-    cin >> doctorID;
+    cout << "Enter specialization: ";
+    getline(cin, newDoctor.specialization);
 
-    doctors[doctorCount] = doctorName;
-    doctorIDs[doctorCount] = doctorID;
+    cout << "Enter availability (1 for available, 0 for not available): ";
+    cin >> newDoctor.isAvailable;
+
+    doctors[doctorCount] = newDoctor;
+    doctorCount++;
 
     cout << "Doctor added successfully!" << endl;
-    doctorCount++;
 }
 
-// Function to select room for the patient
-void selectRoom(string rooms[], string roomAssignments[], int patientCount) {
-    string room;
-    cout << "Enter room number for patient " << patientCount + 1 << ": ";
-    cin >> room;
-    roomAssignments[patientCount] = room;
+void displayDoctors() {
+    if (doctorCount == 0) {
+        cout << "No doctors available." << endl;
+        return;
+    }
 
-    cout << "Room " << room << " assigned to patient " << patientCount + 1 << endl;
+    cout << "\nID\tName\tSpecialization\tAvailability\n";
+    for (int i = 0; i < doctorCount; i++) {
+        cout << doctors[i].id << "\t" << doctors[i].name << "\t" << doctors[i].specialization
+             << "\t" << (doctors[i].isAvailable ? "Available" : "Not Available") << endl;
+    }
 }
 
-// Function to handle treatment details
-void treatmentDetails(string treatmentDetails[], int patientCount) {
-    string treatment;
-    cout << "Enter treatment details for patient " << patientCount + 1 << ": ";
-    cin >> treatment;
-    treatmentDetails[patientCount] = treatment;
+void addPatient() {
+    if (patientCount >= MAX_PATIENTS) {
+        cout << "Hospital is at full capacity!" << endl;
+        return;
+    }
 
-    cout << "Treatment details added successfully!" << endl;
+    Patient newPatient;
+    newPatient.id = patientCount + 1;
+
+    cout << "Enter patient's name: ";
+    cin.ignore();
+    getline(cin, newPatient.name);
+
+    cout << "Enter disease: ";
+    getline(cin, newPatient.disease);
+
+    cout << "Enter room number: ";
+    cin >> newPatient.roomNo;
+
+    cout << "Enter number of days admitted: ";
+    cin >> newPatient.daysAdmitted;
+
+    newPatient.totalBill = newPatient.daysAdmitted * 250; // Assuming Rs. 250 per day
+
+    patients[patientCount] = newPatient;
+    patientCount++;
+
+    cout << "Patient added successfully!" << endl;
+}
+
+void displayPatients() {
+    if (patientCount == 0) {
+        cout << "No patients in the system." << endl;
+        return;
+    }
+
+    cout << "\nID\tName\tDisease\tRoom No\tDays\tBill\n";
+    for (int i = 0; i < patientCount; i++) {
+        cout << patients[i].id << "\t" << patients[i].name << "\t" << patients[i].disease
+             << "\t" << patients[i].roomNo << "\t" << patients[i].daysAdmitted
+             << "\t" << patients[i].totalBill << endl;
+    }
+}
+
+void assignDoctorToPatient() {
+    int patientId, doctorId;
+    cout << "Enter patient ID: ";
+    cin >> patientId;
+
+    if (patientId <= 0 || patientId > patientCount) {
+        cout << "Invalid patient ID!" << endl;
+        return;
+    }
+
+    cout << "Enter doctor ID: ";
+    cin >> doctorId;
+
+    if (doctorId <= 0 || doctorId > doctorCount) {
+        cout << "Invalid doctor ID!" << endl;
+        return;
+    }
+
+    if (!doctors[doctorId - 1].isAvailable) {
+        cout << "Doctor is not available!" << endl;
+        return;
+    }
+
+    cout << "Doctor " << doctors[doctorId - 1].name << " assigned to patient " << patients[patientId - 1].name << endl;
+    doctors[doctorId - 1].isAvailable = false; // Mark doctor as unavailable
 }
 
 int main() {
-    string patients[MAX_PATIENTS], patientIDs[MAX_PATIENTS];
-    string doctors[MAX_PATIENTS], doctorIDs[MAX_PATIENTS];
-    string roomAssignments[MAX_PATIENTS], treatmentDetailsArray[MAX_PATIENTS];
-
-    int patientCount = 0, doctorCount = 0;
-
     int choice;
     do {
         cout << "\nHospital Management System\n";
-        cout << "1. Add Patient\n";
-        cout << "2. Add Doctor\n";
-        cout << "3. Select Room for Patient\n";
-        cout << "4. Add Treatment Details\n";
-        cout << "5. Exit\n";
+        cout << "1. Add Doctor\n";
+        cout << "2. Display Doctors\n";
+        cout << "3. Add Patient\n";
+        cout << "4. Display Patients\n";
+        cout << "5. Assign Doctor to Patient\n";
+        cout << "6. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
         switch (choice) {
-            case 1:
-                addPatientDetails(patients, patientIDs, patientCount);
-                break;
-            case 2:
-                addDoctorDetails(doctors, doctorIDs, doctorCount);
-                break;
-            case 3:
-                if (patientCount > 0) {
-                    selectRoom(roomAssignments, patientCount);
-                } else {
-                    cout << "No patients to assign rooms!" << endl;
-                }
-                break;
-            case 4:
-                if (patientCount > 0) {
-                    treatmentDetails(treatmentDetailsArray, patientCount);
-                } else {
-                    cout << "No patients to add treatment details!" << endl;
-                }
-                break;
-            case 5:
-                cout << "Exiting Hospital Management System.\n";
-                break;
-            default:
-                cout << "Invalid choice. Try again.\n";
+            case 1: addDoctor(); break;
+            case 2: displayDoctors(); break;
+            case 3: addPatient(); break;
+            case 4: displayPatients(); break;
+            case 5: assignDoctorToPatient(); break;
+            case 6: cout << "Exiting system..." << endl; break;
+            default: cout << "Invalid choice! Please try again." << endl;
         }
-    } while (choice != 5);
+    } while (choice != 6);
 
     return 0;
 }
