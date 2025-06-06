@@ -1,163 +1,172 @@
+#ifndef MEMORY_UNIT_H
+#define MEMORY_UNIT_H
+
+#include <map>
+
+class MemoryUnit {
+private:
+    std::map<int, int> memory;
+
+public:
+    void write(int address, int value);
+    int read(int address);
+    void displayFirst16();
+};
+
+#endif
+#include "memory_unit.h"
 #include <iostream>
+
+void MemoryUnit::write(int address, int value) {
+    if (address >= 0 && address < 65536)
+        memory[address] = value;
+}
+
+int MemoryUnit::read(int address) {
+    return memory.count(address) ? memory[address] : 0;
+}
+
+void MemoryUnit::displayFirst16() {
+    for (int i = 0; i < 16; ++i)
+        std::cout << i << " -> " << read(i) << std::endl;
+}
+#ifndef INSTRUCTION_H
+#define INSTRUCTION_H
+
 #include <string>
-using namespace std;
+#include <vector>
 
-const int MAX_PATIENTS = 100;
-const int MAX_DOCTORS = 10;
+struct Instruction {
+    std::string opcode;
+    std::string operand1;
+    std::string operand2;
 
-struct Patient {
-    int id;
-    string name;
-    string disease;
-    int roomNo;
-    int daysAdmitted;
-    float totalBill;
+    Instruction(std::string op, std::string o1, std::string o2 = "")
+        : opcode(op), operand1(o1), operand2(o2) {}
 };
 
-struct Doctor {
-    int id;
-    string name;
-    string specialization;
-    bool isAvailable;
+std::vector<Instruction> parseInstructions(const std::string& filename);
+
+#endif
+#ifndef PROCESSOR_H
+#define PROCESSOR_H
+
+#include "register_bank.h"
+#include "memory_unit.h"
+#include "instruction.h"
+#include <vector>
+
+class Processor {
+private:
+    RegisterBank reg;
+    MemoryUnit mem;
+    std::vector<Instruction> instructions;
+    int pc;
+
+    int resolveOperand(const std::string& operand);
+    void execute(const Instruction& instr);
+
+public:
+    Processor(const std::vector<Instruction>& instrList);
+    void run();
 };
 
-Patient patients[MAX_PATIENTS];
-Doctor doctors[MAX_DOCTORS];
-int patientCount = 0;
-int doctorCount = 0;
+#endif
+#include "processor.h"
+#include <iostream>
+#include <cctype>
+#include <sstream>
 
-void addDoctor() {
-    if (doctorCount >= MAX_DOCTORS) {
-        cout << "Doctor capacity reached!" << endl;
-        return;
-    }
+Processor::Processor(const std::vector<Instruction>& instrList)
+    : instructions(instrList), pc(0) {}
 
-    Doctor newDoctor;
-    newDoctor.id = doctorCount + 1;
-
-    cout << "Enter doctor's name: ";
-    cin.ignore();
-    getline(cin, newDoctor.name);
-
-    cout << "Enter specialization: ";
-    getline(cin, newDoctor.specialization);
-
-    cout << "Enter availability (1 for available, 0 for not available): ";
-    cin >> newDoctor.isAvailable;
-
-    doctors[doctorCount] = newDoctor;
-    doctorCount++;
-
-    cout << "Doctor added successfully!" << endl;
-}
-
-void displayDoctors() {
-    if (doctorCount == 0) {
-        cout << "No doctors available." << endl;
-        return;
-    }
-
-    cout << "\nID\tName\tSpecialization\tAvailability\n";
-    for (int i = 0; i < doctorCount; i++) {
-        cout << doctors[i].id << "\t" << doctors[i].name << "\t" << doctors[i].specialization
-             << "\t" << (doctors[i].isAvailable ? "Available" : "Not Available") << endl;
+int Processor::resolveOperand(const std::string& operand) {
+    if (operand.empty()) return 0;
+    if (operand[0] == '[') {
+        int addr = std::stoi(operand.substr(1, operand.size() - 2));
+        return mem.read(addr);
+    } else if (reg.get(operand) || operand == "AX" || operand == "BX" || operand == "CX" || operand == "DX") {
+        return reg.get(operand);
+    } else {
+        return std::stoi(operand);
     }
 }
 
-void addPatient() {
-    if (patientCount >= MAX_PATIENTS) {
-        cout << "Hospital is at full capacity!" << endl;
-        return;
-    }
+void Processor::execute(const Instruction& instr) {
+    std::string op = instr.opcode;
+    std::string a = instr.operand1;
+    std::string b = instr.operand2;
 
-    Patient newPatient;
-    newPatient.id = patientCount + 1;
-
-    cout << "Enter patient's name: ";
-    cin.ignore();
-    getline(cin, newPatient.name);
-
-    cout << "Enter disease: ";
-    getline(cin, newPatient.disease);
-
-    cout << "Enter room number: ";
-    cin >> newPatient.roomNo;
-
-    cout << "Enter number of days admitted: ";
-    cin >> newPatient.daysAdmitted;
-
-    newPatient.totalBill = newPatient.daysAdmitted * 250; // Assuming Rs. 250 per day
-
-    patients[patientCount] = newPatient;
-    patientCount++;
-
-    cout << "Patient added successfully!" << endl;
-}
-
-void displayPatients() {
-    if (patientCount == 0) {
-        cout << "No patients in the system." << endl;
-        return;
-    }
-
-    cout << "\nID\tName\tDisease\tRoom No\tDays\tBill\n";
-    for (int i = 0; i < patientCount; i++) {
-        cout << patients[i].id << "\t" << patients[i].name << "\t" << patients[i].disease
-             << "\t" << patients[i].roomNo << "\t" << patients[i].daysAdmitted
-             << "\t" << patients[i].totalBill << endl;
+    if (op == "MOV") {
+        if (a[0] == '[') {
+            int addr = std::stoi(a.substr(1, a.size() - 2));
+            int val = resolveOperand(b);
+            mem.write(addr, val);
+        } else if (b[0] == '[') {
+            int val = resolveOperand(b);
+            reg.set(a, val);
+        } else if (reg.get(a) || a == "AX" || a == "BX" || a == "CX" || a == "DX") {
+            int val = resolveOperand(b);
+            reg.set(a, val);
+        } else {
+            int addr = std::stoi(a);
+            int val = resolveOperand(b);
+            mem.write(addr, val);
+        }
+    } else if (op == "ADD") {
+        reg.set("AX", reg.get("AX") + resolveOperand(b));
+    } else if (op == "SUB") {
+        reg.set("AX", reg.get("AX") - resolveOperand(b));
+    } else if (op == "MUL") {
+        reg.set("AX", reg.get("AX") * resolveOperand(b));
+    } else if (op == "DIV") {
+        int divisor = resolveOperand(b);
+        if (divisor != 0)
+            reg.set("AX", reg.get("AX") / divisor);
     }
 }
 
-void assignDoctorToPatient() {
-    int patientId, doctorId;
-    cout << "Enter patient ID: ";
-    cin >> patientId;
+void Processor::run() {
+    while (pc < instructions.size()) {
+        if (instructions[pc].opcode == "HLT") {
+            std::cout << "Received Interrupt\nSnapshot of the processor:\n";
+            reg.display();
+            std::cout << "First 16 Memory Contents\n";
+            mem.displayFirst16();
+            break;
+        }
+        execute(instructions[pc]);
+        ++pc;
+    }
+}
+#include "instruction.h"
+#include "processor.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
-    if (patientId <= 0 || patientId > patientCount) {
-        cout << "Invalid patient ID!" << endl;
-        return;
+std::vector<Instruction> parseInstructions(const std::string& filename) {
+    std::ifstream file(filename);
+    std::vector<Instruction> list;
+    std::string line;
+
+    while (getline(file, line)) {
+        std::istringstream iss(line);
+        std::string op, o1, o2;
+        iss >> op >> o1;
+        if (iss >> o2) {
+            if (o2.back() == ',') o2.pop_back();
+        }
+        if (o1.back() == ',') o1.pop_back();
+        list.emplace_back(op, o1, o2);
     }
 
-    cout << "Enter doctor ID: ";
-    cin >> doctorId;
-
-    if (doctorId <= 0 || doctorId > doctorCount) {
-        cout << "Invalid doctor ID!" << endl;
-        return;
-    }
-
-    if (!doctors[doctorId - 1].isAvailable) {
-        cout << "Doctor is not available!" << endl;
-        return;
-    }
-
-    cout << "Doctor " << doctors[doctorId - 1].name << " assigned to patient " << patients[patientId - 1].name << endl;
-    doctors[doctorId - 1].isAvailable = false; // Mark doctor as unavailable
+    return list;
 }
 
 int main() {
-    int choice;
-    do {
-        cout << "\nHospital Management System\n";
-        cout << "1. Add Doctor\n";
-        cout << "2. Display Doctors\n";
-        cout << "3. Add Patient\n";
-        cout << "4. Display Patients\n";
-        cout << "5. Assign Doctor to Patient\n";
-        cout << "6. Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
-
-        switch (choice) {
-            case 1: addDoctor(); break;
-            case 2: displayDoctors(); break;
-            case 3: addPatient(); break;
-            case 4: displayPatients(); break;
-            case 5: assignDoctorToPatient(); break;
-            case 6: cout << "Exiting system..." << endl; break;
-            default: cout << "Invalid choice! Please try again." << endl;
-        }
-    } while (choice != 6);
-
+    std::vector<Instruction> instrs = parseInstructions("instructions.txt");
+    Processor processor(instrs);
+    processor.run();
     return 0;
 }
