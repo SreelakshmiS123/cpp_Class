@@ -34,3 +34,30 @@ extern "C" void kernel_main();
 
 #endif
 
+//bootloader.asm
+[ORG 0x7C00]         ; BIOS loads bootloader here
+
+; Print "Hi"
+MOV AH, 0x0E
+MOV AL, 'H'
+INT 0x10
+MOV AL, 'i'
+INT 0x10
+
+; Load kernel from disk (sector 2) into memory at 0x1000
+MOV AX, 0x1000       ; Segment where kernel will be loaded
+MOV ES, AX
+MOV BX, 0x0000       ; Offset within segment
+MOV AH, 0x02         ; BIOS read sector function
+MOV AL, 1            ; Number of sectors to read
+MOV CH, 0            ; Cylinder
+MOV CL, 2            ; Sector (starts at 1)
+MOV DH, 0            ; Head
+INT 0x13             ; BIOS disk read
+
+; Jump to kernel
+JMP 0x1000
+
+; Boot signature
+TIMES 510 - ($ - $$) DB 0
+DW 0xAA55
