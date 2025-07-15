@@ -24,3 +24,13 @@ DW 0xAA55
 
     while (1); // Infinite loop to keep kernel running
 }
+
+
+//kernel.h
+#ifndef KERNEL_H
+#define KERNEL_H
+
+extern "C" void kernel_main();
+
+#endif
+
