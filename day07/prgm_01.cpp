@@ -61,3 +61,23 @@ JMP 0x1000
 ; Boot signature
 TIMES 510 - ($ - $$) DB 0
 DW 0xAA55
+
+
+  //linker.ld
+  ENTRY(kernel_main)
+
+SECTIONS {
+    . = 0x1000;
+
+    .text : {
+        *(.text)
+    }
+
+    .data : {
+        *(.data)
+    }
+
+    .bss : {
+        *(.bss)
+    }
+}
