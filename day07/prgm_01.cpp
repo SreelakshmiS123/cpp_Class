@@ -102,3 +102,4 @@ makepkg
 
 
 
+git clone https://github.com/nativeos/pkgbuild-i386-elf-toolchain.git
