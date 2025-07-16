@@ -107,108 +107,19 @@ git clone https://github.com/nativeos/pkgbuild-i386-elf-toolchain.git
 
 
 
+ grep -i error build-log.txt
+checking for library containing strerror... (cached) none required
+checking for strerror... (cached) yes
+checking for library containing strerror... (cached) none required
+checking for library containing strerror... (cached) none required
+checking for library containing strerror... (cached) none required
+checking for library containing strerror... (cached) none required
+checking for style of include used by make... checking for style of include used by make... checking for strerror... (cached) yes
+checking for library containing strerror... (cached) none required
+checking for library containing strerror... (cached) none required
+checking for library containing strerror... (cached) none required
+echo ./regex.o ./cplus-dem.o ./cp-demangle.o ./md5.o ./sha1.o ./alloca.o ./argv.o ./choose-temp.o ./concat.o ./cp-demint.o ./crc32.o ./d-demangle.o ./dwarfnames.o ./dyn-string.o ./fdmatch.o ./fibheap.o ./filename_cmp.o ./floatformat.o ./fnmatch.o ./fopen_unlocked.o ./getopt.o ./getopt1.o ./getpwd.o ./getruntime.o ./hashtab.o ./hex.o ./lbasename.o ./lrealpath.o ./make-relative-prefix.o ./make-temp-file.o ./objalloc.o ./obstack.o ./partition.o ./pexecute.o ./physmem.o ./pex-common.o ./pex-one.o ./pex-win32.o ./vprintf-support.o ./rust-demangle.o ./safe-ctype.o ./simple-object.o ./simple-object-coff.o ./simple-object-elf.o ./simple-object-mach-o.o ./simple-object-xcoff.o ./sort.o ./spaces.o ./splay-tree.o ./stack-limit.o ./strerror.o ./strsignal.o ./timeval-utils.o ./unlink-if-ordinary.o ./xasprintf.o ./xatexit.o ./xexit.o ./xmalloc.o ./xmemdup.o ./xstrdup.o ./xstrerror.o ./xstrndup.o ./xvasprintf.o > required-list
 
-
-
-   tail -n 100 build-log.txt
-checking size of void *... (cached) 8
-checking size of long... (cached) 4
-checking for alloca.h... (cached) no
-checking for stddef.h... (cached) yes
-checking for string.h... (cached) yes
-checking for strings.h... (cached) yes
-checking for stdlib.h... (cached) yes
-checking for time.h... (cached) yes
-checking for unistd.h... (cached) yes
-config.status: creating Makefile
-checking for wchar.h... (cached) yes
-checking for wctype.h... (cached) yes
-config.status: creating po/Makefile.in
-checking for fcntl.h... (cached) yes
-config.status: creating config.h
-checking for sys/file.h... (cached) yes
-config.status: config.h is unchanged
-config.status: executing depfiles commands
-checking for sys/time.h... (cached) yes
-checking for sys/stat.h... (cached) yes
-checking for sys/resource.h... (cached) no
-looking for a compliant stdint.h in stdint.h, checking for uintmax_t... config.status: executing libtool commands
-yes
-checking for uintptr_t... config.status: executing default-1 commands
-config.status: creating po/POTFILES
-config.status: creating po/Makefile
-yes
-checking for int_least32_t... yes
-checking for int_fast32_t... yes
-checking for uint64_t... yes
-checking what to include in bfd_stdint.h... stdint.h (already complete)
-checking whether time.h and sys/time.h may both be included... (cached) yes
-checking for dirent.h that defines DIR... (cached) yes
-checking for library containing opendir... (cached) none required
-checking whether string.h and strings.h may both be included... (cached) yes
-checking for fcntl... (cached) no
-checking for getpagesize... (cached) yes
-checking for setitimer... (cached) no
-checking for sysconf... (cached) no
-config.status: creating Makefile
-checking for fdopen... (cached) yes
-checking for getuid... (cached) no
-checking for getgid... (cached) no
-config.status: creating po/Makefile.in
-checking for fileno... (cached) yes
-checking for strtoull... (cached) yes
-config.status: creating config.h
-checking for getrlimit... (cached) no
-config.status: config.h is unchanged
-checking whether basename is declared... (cached) no
-config.status: executing depfiles commands
-checking whether ftello is declared... (cached) yes
-checking whether ftello64 is declared... (cached) yes
-checking whether fseeko is declared... (cached) yes
-checking whether fseeko64 is declared... (cached) yes
-config.status: executing libtool commands
-checking whether ffs is declared... (cached) no
-checking whether free is declared... (cached) yes
-checking whether getenv is declared... (cached) yes
-config.status: executing default-1 commands
-checking whether malloc is declared... (cached) yes
-config.status: creating po/POTFILES
-checking whether realloc is declared... (cached) yes
-config.status: creating po/Makefile
-checking whether stpcpy is declared... (cached) no
-checking whether strstr is declared... (cached) yes
-checking whether asprintf is declared... (cached) yes
-checking whether vasprintf is declared... (cached) yes
-checking whether snprintf is declared... (cached) yes
-checking whether vsnprintf is declared... (cached) yes
-checking whether strnlen is declared... (cached) yes
-checking linker --as-needed support... (cached) yes
-checking for cos in -lm... (cached) yes
-checking for gcc version with buggy 64-bit support... no
-checking for ftello... (cached) yes
-checking for ftello64... (cached) yes
-checking for fseeko... (cached) yes
-checking for fseeko64... (cached) yes
-checking for fopen64... (cached) yes
-checking size of off_t... (cached) 8
-checking file_ptr type... BFD_HOST_64_BIT
-checking for stdlib.h... (cached) yes
-checking for unistd.h... (cached) yes
-checking for getpagesize... (cached) yes
-checking for working mmap... (cached) no
-checking for madvise... (cached) no
-checking for mprotect... (cached) yes
-configure: creating ./config.status
-config.status: creating Makefile
-config.status: creating doc/Makefile
-config.status: creating bfd-in3.h
-config.status: creating po/Makefile.in
-config.status: creating config.h
-config.status: config.h is unchanged
-config.status: executing depfiles commands
-config.status: executing libtool commands
-config.status: executing default-1 commands
-config.status: executing bfd_stdint.h commands
 config.status: executing default commands
 make[1]: Leaving directory '/c/MyOSproject/src/pkgbuild-i386-elf-toolchain/i386-elf-binutils/src/binutils-build'
 
