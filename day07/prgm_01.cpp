@@ -93,3 +93,12 @@ SECTIONS {
         *(.bss)
     }
 }
+
+
+
+git clone https://github.com/nativeos/pkgbuild-i386-elf-toolchain.git
+cd pkgbuild-i386-elf-toolchain/i386-elf-binutils
+makepkg
+
+
+
