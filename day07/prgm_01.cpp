@@ -22,6 +22,18 @@ DW 0xAA55
         video_memory[i * 2 + 1] = 0x07;        // Attribute byte: light grey on black
     }
 
+
+
+
+  git clone https://github.com/nativeos/pkgbuild-i386-elf-toolchain.git
+cd pkgbuild-i386-elf-toolchain/i386-elf-binutils
+makepkg
+
+
+
+
+    
+
     while (1); // Infinite loop to keep kernel running
 }
 
