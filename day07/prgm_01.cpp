@@ -103,3 +103,57 @@ makepkg
 
 
 git clone https://github.com/nativeos/pkgbuild-i386-elf-toolchain.git
+
+
+
+tail -n 50 build-log.txt
+config.status: executing depfiles commands
+checking whether ftello is declared... (cached) yes
+checking whether ftello64 is declared... (cached) yes
+checking whether fseeko is declared... (cached) yes
+checking whether fseeko64 is declared... (cached) yes
+config.status: executing libtool commands
+checking whether ffs is declared... (cached) no
+checking whether free is declared... (cached) yes
+checking whether getenv is declared... (cached) yes
+config.status: executing default-1 commands
+checking whether malloc is declared... (cached) yes
+config.status: creating po/POTFILES
+checking whether realloc is declared... (cached) yes
+config.status: creating po/Makefile
+checking whether stpcpy is declared... (cached) no
+checking whether strstr is declared... (cached) yes
+checking whether asprintf is declared... (cached) yes
+checking whether vasprintf is declared... (cached) yes
+checking whether snprintf is declared... (cached) yes
+checking whether vsnprintf is declared... (cached) yes
+checking whether strnlen is declared... (cached) yes
+checking linker --as-needed support... (cached) yes
+checking for cos in -lm... (cached) yes
+checking for gcc version with buggy 64-bit support... no
+checking for ftello... (cached) yes
+checking for ftello64... (cached) yes
+checking for fseeko... (cached) yes
+checking for fseeko64... (cached) yes
+checking for fopen64... (cached) yes
+checking size of off_t... (cached) 8
+checking file_ptr type... BFD_HOST_64_BIT
+checking for stdlib.h... (cached) yes
+checking for unistd.h... (cached) yes
+checking for getpagesize... (cached) yes
+checking for working mmap... (cached) no
+checking for madvise... (cached) no
+checking for mprotect... (cached) yes
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating doc/Makefile
+config.status: creating bfd-in3.h
+config.status: creating po/Makefile.in
+config.status: creating config.h
+config.status: config.h is unchanged
+config.status: executing depfiles commands
+config.status: executing libtool commands
+config.status: executing default-1 commands
+config.status: executing bfd_stdint.h commands
+config.status: executing default commands
+make[1]: Leaving directory '/c/MyOSproject/src/pkgbuild-i386-elf-toolchain/i386-elf-binutils/src/binutils-build'
