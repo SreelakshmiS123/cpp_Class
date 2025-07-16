@@ -106,7 +106,61 @@ git clone https://github.com/nativeos/pkgbuild-i386-elf-toolchain.git
 
 
 
-tail -n 50 build-log.txt
+
+
+
+
+   tail -n 100 build-log.txt
+checking size of void *... (cached) 8
+checking size of long... (cached) 4
+checking for alloca.h... (cached) no
+checking for stddef.h... (cached) yes
+checking for string.h... (cached) yes
+checking for strings.h... (cached) yes
+checking for stdlib.h... (cached) yes
+checking for time.h... (cached) yes
+checking for unistd.h... (cached) yes
+config.status: creating Makefile
+checking for wchar.h... (cached) yes
+checking for wctype.h... (cached) yes
+config.status: creating po/Makefile.in
+checking for fcntl.h... (cached) yes
+config.status: creating config.h
+checking for sys/file.h... (cached) yes
+config.status: config.h is unchanged
+config.status: executing depfiles commands
+checking for sys/time.h... (cached) yes
+checking for sys/stat.h... (cached) yes
+checking for sys/resource.h... (cached) no
+looking for a compliant stdint.h in stdint.h, checking for uintmax_t... config.status: executing libtool commands
+yes
+checking for uintptr_t... config.status: executing default-1 commands
+config.status: creating po/POTFILES
+config.status: creating po/Makefile
+yes
+checking for int_least32_t... yes
+checking for int_fast32_t... yes
+checking for uint64_t... yes
+checking what to include in bfd_stdint.h... stdint.h (already complete)
+checking whether time.h and sys/time.h may both be included... (cached) yes
+checking for dirent.h that defines DIR... (cached) yes
+checking for library containing opendir... (cached) none required
+checking whether string.h and strings.h may both be included... (cached) yes
+checking for fcntl... (cached) no
+checking for getpagesize... (cached) yes
+checking for setitimer... (cached) no
+checking for sysconf... (cached) no
+config.status: creating Makefile
+checking for fdopen... (cached) yes
+checking for getuid... (cached) no
+checking for getgid... (cached) no
+config.status: creating po/Makefile.in
+checking for fileno... (cached) yes
+checking for strtoull... (cached) yes
+config.status: creating config.h
+checking for getrlimit... (cached) no
+config.status: config.h is unchanged
+checking whether basename is declared... (cached) no
 config.status: executing depfiles commands
 checking whether ftello is declared... (cached) yes
 checking whether ftello64 is declared... (cached) yes
@@ -157,3 +211,4 @@ config.status: executing default-1 commands
 config.status: executing bfd_stdint.h commands
 config.status: executing default commands
 make[1]: Leaving directory '/c/MyOSproject/src/pkgbuild-i386-elf-toolchain/i386-elf-binutils/src/binutils-build'
+
