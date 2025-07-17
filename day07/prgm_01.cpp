@@ -104,25 +104,6 @@ makepkg
 
 git clone https://github.com/nativeos/pkgbuild-i386-elf-toolchain.git
 
-/*
-
-@deftypefn Supplemental int waitpid (int @var{pid}, int *@var{status}, int)
-
-This is a wrapper around the @code{wait} function.  Any ``special''
-values of @var{pid} depend on your implementation of @code{wait}, as
-does the return value.  The third argument is unused in @libib{}.
-
-@end deftypefn
-
-*/
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-#include "ansidecl.h"
-
-/* On some systems (such as WindISS), you must include <sys/types.h>
-   to get the definition of "pid_t" before you include <sys/wait.h>.  */
-
-^G Help          ^O Write Out     ^F Where Is      ^K Cut           ^T Execute       ^C Location      M-U Undo         M-A Set Mark     M-] To Bracket   M-B Previous
-^X Exit          ^R Read File     ^\ Replace       ^U Paste         ^J Justify       ^/ Go To Line    M-E Redo         M-6 Copy         ^B Where Was     M-F Next
+wget https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.gz
+tar -xvzf gcc-13.2.0.tar.gz
+cd gcc-13.2.0
